@@ -1,0 +1,126 @@
+{% extends "site_base.html" %}i
+
+{% block body %}
+  {% block banner %}
+    <h1 style="text-align: center">Create Your New Product</h1>
+    {% endblock %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="successmessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title text-center" id="myModalLabel">Product Created!</h4>
+          </div>
+          <div class="modal-body">
+            <p>Your product is created successfully!</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="Container">
+        <form action="/create_product/" class="form-horizontal" method="POST" enctype='multipart/form-data'>
+            {% csrf_token %}
+            <div class="form-group row">
+                <label class="col-md-5" for="productName">Product Name: </label>
+                <input required type="text" name="name" class="form-control" id="productName">
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-5" for="startAge">Target Start Age: </label>
+                <input required type="number" name="startAge" class="form-control" id="startAge" placeholder="0">
+            </div>
+
+           <div class="form-group row">
+                <label class="col-md-5" for="endAge">Target End Age: </label>
+                <input required type="number" name="endAge" class="form-control" id="endAge" placeholder="100">
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-5" for="targetGender" class="">Target Gender:</label>
+                <select class="form-control col-md-7" id="targetGender" name="gender">
+                  <option value="3" selected>All</option>
+                  <option value="0">Female</option>
+                  <option value="1">Male</option>
+                </select>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-5" for="targetCountry" class="">Target Country:</label>
+                <select class="form-control col-md-7" id="targetCountry" name="country">
+                  <option value="All" selected>All</option>
+                  <option value="SG">Singapore</option>
+                  <option value="US">America</option>
+                  <option value="CN">China</option>
+                  <option value="UK">Britain</option>
+                </select>
+            </div>
+
+            <div class="form-group row">
+                    <label class="col-md-5" for="targetIncome" class="">Target Income Group:</label>
+                    <select class="form-control col-md-7" id="targetIncome" name="income">
+                      <option value="0" selected>All</option>
+                      <option value="1">Less than S$1000</option>
+                      <option value="2">1000 ~ 2000</option>
+                      <option value="3">2000 ~ 2500</option>
+                      <option value="4">2500 ~ 3000</option>
+                      <option value="5">3000 ~ 3500</option>
+                      <option value="6">3500 ~ 4000</option>
+                      <option value="7">Above 4000</option>
+                    </select>
+            </div>
+
+            <br/>
+            <div class="container" style="border:1px black solid;padding-left: 30px;">  
+                
+              <div class="row">
+                 <h5>Upload Product Photo</h5>
+                 <p>Only png , jpeg and gif are allowed</p>
+                 <input type="file" name="image" value="Choose File" class="btn" id="imgInp"/>
+                 {% if error  %}
+                    <div class="alert alert-danger col-lg-4">
+                        {{error}}   
+                    </div>
+                  {% endif %}
+              </div>
+              <div class="row">
+                  <img id="imagePreview" src="#" alt="your image" />
+              </div>
+            </div>
+             <br/>
+             <div class="row">
+                <input type="submit" value="Submit" class="btn btn-info">
+            </div>
+        </form>
+    </div>
+   
+{% endblock %}
+{% block extra_body  %}
+      <script type="text/javascript">
+
+        {% if success %}
+          $('#successmessage').modal('show');
+        {% endif %}
+
+        function readURL(input) {
+              if (input.files && input.files[0]) {
+                  var reader = new FileReader();
+                  
+                  reader.onload = function (e) {
+                      $('#imagePreview').attr('src', e.target.result);
+                  }
+                  
+                  reader.readAsDataURL(input.files[0]);
+              }
+          }
+    
+    $("#imgInp").change(function(){
+        readURL(this);
+    });  
+    </script>
+{% endblock %}

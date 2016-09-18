@@ -1,0 +1,32 @@
+{% extends "site_base.html" %}
+
+{% block body %}
+    {% for product in products %}
+    {% if forloop.counter0|divisibleby:"3" %}
+    <div class="row">
+        {% endif %}
+        <div class="col-md-3" style="border:#777 solid 1px;margin:5px">
+            {% if product.image %}
+            <a href='{% url 'product_detail' product.pk %}'><img src="/site_media/media/{{product.image}}" alt="{{product.title}}" style="width: 19vw;height:15vw"/></a>
+            {% endif %}
+
+            <h3>{{product.title}}</h3>
+            <p>Likes: <span class='pull-right' style='font-size: 14px'>{{product.likes}}</<span></p>
+            <p>Dislikes: <span class='pull-right' style='font-size: 14px'>{{product.dislikes}}</<span></p>
+        </div>
+
+        {% if forloop.last %}
+            <div class="col-md-3" style="border:#777 solid 1px;margin:5px; text-align: center">
+                <a href="{% url 'create_product' %}"><img src="/site_media/media/images/add_symbol.png" style="width: 100%;height:100%"></a>
+            </div>
+        </div>
+        {% elif forloop.counter|divisibleby:"3" %}
+        </div>
+        {% endif %}
+    {% endfor %}
+    {% endblock %}
+{% block extra_body  %}
+    <script type="text/javascript">
+
+    </script>
+{% endblock %}

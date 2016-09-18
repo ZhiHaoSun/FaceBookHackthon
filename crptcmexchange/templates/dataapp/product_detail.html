@@ -1,0 +1,314 @@
+{% extends "site_base.html" %}
+
+{% block body %}
+    {% block banner %}
+    <div class="row">
+        <div class="col-md-5">
+            <img style="width: 28vw;height:24vw" src="/site_media/media/{{product.image}}" alt="{{product.title}}"/>
+        </div>
+        <div class="col-md-7">
+            <h1>{{product.title}}</h1>
+            <h2>Likes: {{likes}}</h2>
+            <h2>Dislikes: {{dislikes}}</h2>
+            <a href="{% url 'export_data' product.pk %}" class="btn btn-info">Export Data</a>
+            <br/><br/>
+            <form action='{% url 'product_detail' product.pk %}' method = 'POST'>
+                {% csrf_token %}
+                {% if product.hidden == 0 %}
+                <button type="submit" class="btn btn-danger" name="action" value="revoke">Revoke the Product</a>
+                {% else %}
+                <button type="submit" class="btn btn-success" name="action" value="recover">Recover the Product</a>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+    
+    
+    {% endblock %}
+    <br/>
+    <br/>
+    <div class="row">
+        <div class="col-md-4">
+             <canvas id="genderLikePie" width="200" height="200"></canvas>
+        </div>
+     
+        <div class="col-md-4">
+             <canvas id="genderDislikePie" width="200" height="200"></canvas>
+        </div>
+    </div>
+
+    <br/>
+    <br/>
+    <div class="row">
+        <div class="col-md-5">
+             <canvas id="ageLikePie" width="300" height="300"></canvas>
+        </div>
+     
+        <div class="col-md-5">
+             <canvas id="ageDislikePie" width="300" height="300"></canvas>
+        </div>
+    </div>
+
+    <br/>
+    <br/>
+    <div class="row">
+        <div class="col-md-5">
+             <canvas id="incomeLikePie" width="300" height="300"></canvas>
+        </div>
+     
+        <div class="col-md-5">
+             <canvas id="incomeDislikePie" width="300" height="300"></canvas>
+        </div>
+    </div>
+   
+{% endblock %}
+{% block extra_body  %}
+    <script type="text/javascript">
+        var genderLikePie = $('#genderLikePie');
+        var genderDislikePie = $('#genderDislikePie');
+        var ageLikePie = $('#ageLikePie');
+        var ageDislikePie = $('#ageDislikePie');
+        var incomeLikePie = $('#incomeLikePie');
+        var incomeDislikePie = $('#incomeDislikePie');
+
+        var genderLikeData = {
+            datasets: [{
+                data: [
+                    {{male_like}},
+                    {{female_like}}
+                ],
+                backgroundColor: [
+                    "#4BC0C0",
+                    "#FF6384"
+                ],
+                label: 'Gender Likes' // for legend
+            }],
+            labels: [
+                "Male",
+                "Female"
+            ]
+        };
+
+        var genderDislikeData = {
+            datasets: [{
+                data: [
+                    {{male_dislike}},
+                    {{female_dislike}}
+                ],
+                backgroundColor: [
+                   "#4BC0C0",
+                    "#FF6384"
+                ],
+                label: 'Gender Dislikes' // for legend
+            }],
+            labels: [
+                "Male",
+                "Female"
+            ]
+        };
+
+        var ageLikeData = {
+            datasets: [{
+                data: [
+                    {{less10_like}},
+                    {{b10_15_like}},
+                    {{b15_20_like}},
+                    {{b20_25_like}},
+                    {{b25_30_like}},
+                    {{b30_40_like}},
+                    {{a40_like}}
+                ],
+                backgroundColor: [
+                    "#4BC0C0",
+                    "#FF6384",
+                    "#40FF00",
+                    '#FFBF00',
+                    '#FFFF00',
+                    '#8904B1',
+                    '#FF0040'
+                ],
+                label: 'Age Likes' // for legend
+            }],
+            labels: [
+                "< 10",
+                "10~15",
+                "15~20",
+                "20~25",
+                "25~30",
+                "30~40",
+                "> 40"
+            ]
+        };
+
+        var ageDislikeData = {
+            datasets: [{
+                data: [
+                    {{less10_dislike}},
+                    {{b10_15_dislike}},
+                    {{b15_20_dislike}},
+                    {{b20_25_dislike}},
+                    {{b25_30_dislike}},
+                    {{b30_40_dislike}},
+                    {{a40_dislike}}
+                ],
+                backgroundColor: [
+                    "#4BC0C0",
+                    "#FF6384",
+                    "#40FF00",
+                    '#FFBF00',
+                    '#FFFF00',
+                    '#8904B1',
+                    '#FF0040'
+                ],
+                label: 'Age Likes' // for legend
+            }],
+            labels: [
+                "< 10",
+                "10~15",
+                "15~20",
+                "20~25",
+                "25~30",
+                "30~40",
+                "> 40"
+            ]
+        };
+
+        var incomeLikeData = {
+            datasets: [{
+                data: [
+                    {{l1000_like}},
+                    {{b1000_2000_like}},
+                    {{b2000_2500_like}},
+                    {{b2500_3000_like}},
+                    {{b3000_3500_like}},
+                    {{b3500_4000_like}},
+                    {{a4000_like}}
+                ],
+                backgroundColor: [
+                    "#4BC0C0",
+                    "#FF6384",
+                    "#40FF00",
+                    '#FFBF00',
+                    '#FFFF00',
+                    '#8904B1',
+                    '#FF0040'
+                ],
+                label: 'Income Group Likes' // for legend
+            }],
+            labels: [
+                "< 1000",
+                "1000~2000",
+                "2000~2500",
+                "2500~3000",
+                "3000~3500",
+                "3500~4000",
+                "> 4000"
+            ]
+        };
+
+        var incomeDislikeData = {
+            datasets: [{
+                data: [
+                    {{l1000_dislike}},
+                    {{b1000_2000_dislike}},
+                    {{b2000_2500_dislike}},
+                    {{b2500_3000_dislike}},
+                    {{b3000_3500_dislike}},
+                    {{b3500_4000_dislike}},
+                    {{a4000_dislike}}
+                ],
+                backgroundColor: [
+                    "#4BC0C0",
+                    "#FF6384",
+                    "#40FF00",
+                    '#FFBF00',
+                    '#FFFF00',
+                    '#8904B1',
+                    '#FF0040'
+                ],
+                label: 'Income Group Dislikes' // for legend
+            }],
+            labels: [
+                "< 1000",
+                "1000~2000",
+                "2000~2500",
+                "2500~3000",
+                "3000~3500",
+                "3500~4000",
+                "> 4000"
+            ]
+        };
+
+        var genderLikePieChart = new Chart(genderLikePie,{
+            type: 'doughnut',
+            data: genderLikeData,
+            options: {
+                title: {
+                    display: true,
+                    text: 'Gender Likes',
+                    fontSize: 20
+                }
+            }
+        });
+
+        var genderDislikePieChart = new Chart(genderDislikePie,{
+            type: 'doughnut',
+            data: genderDislikeData,
+            options: {
+                title: {
+                    display: true,
+                    text: 'Gender Dislikes',
+                    fontSize: 20
+                }
+            }
+        });
+
+        var ageLikePieChart = new Chart(ageLikePie,{
+            type: 'doughnut',
+            data: ageLikeData,
+            options: {
+                title: {
+                    display: true,
+                    text: 'Age Group Likes',
+                    fontSize: 20
+                }
+            }
+        });
+
+        var ageDislikePieChart = new Chart(ageDislikePie,{
+            type: 'doughnut',
+            data: ageDislikeData,
+            options: {
+                title: {
+                    display: true,
+                    text: 'Age Group Dislikes',
+                    fontSize: 20
+                }
+            }
+        });
+
+        var incomeLikePieChart = new Chart(incomeLikePie,{
+            type: 'doughnut',
+            data: incomeLikeData,
+            options: {
+                title: {
+                    display: true,
+                    text: 'Income Group Likes',
+                    fontSize: 20
+                }
+            }
+        });
+
+        var incomeDislikePieChart = new Chart(incomeDislikePie,{
+            type: 'doughnut',
+            data: incomeDislikeData,
+            options: {
+                title: {
+                    display: true,
+                    text: 'Income Group Dislikes',
+                    fontSize: 20
+                }
+            }
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "theme_base.html" %}
+
+{% load staticfiles %}
+{% load metron_tags %}
+{% load i18n %}
+
+
+{% block style_base %}
+    <link href="{% static "pinax/css/theme.css" %}" rel="stylesheet">
+    <link href="{% static "css/site.css" %}" rel="stylesheet">
+    {% block extra_style %}
+    
+    {% endblock %}
+{% endblock %}
+
+
+{% block extra_head_base %}
+<link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
+    {% block extra_head %}{% endblock %}
+{% endblock %}
+
+
+{% block footer %}
+    {% include "_footer.html" %}
+{% endblock %}
+
+
+{% block extra_body_base %}
+    {% analytics %}
+    {% block extra_body %}{% endblock %}
+{% endblock %}
+
+
+{% block script_base %}
+    <script src="{{ STATIC_URL }}js/jquery.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery-ui.js"></script>  
+    <script src="{{ STATIC_URL }}js/chart.js"></script>  
+   
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <script src="{% static "pinax/js/theme.js" %}"></script>
+    {% block extra_script %}
+{% endblock %}
+{% endblock %}

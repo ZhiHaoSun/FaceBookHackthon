@@ -1,0 +1,45 @@
+{% extends "site_base.html" %}
+
+{% block extra_style %}
+<style>
+    #header-title {
+	    display: block;
+	    background: url('/site_media/media/images/background.jpg') rgb(255, 255, 255) no-repeat center -20px;
+	    width: 100%;
+	    opacity: 0.8;
+	    padding-top: 144px;
+	    padding-bottom: 10px;
+	    text-align: center;
+	    color: #563d7c;
+	}
+</style>
+{% endblock %}
+
+{% block body %}
+	{% block banner %}
+	<div id="header-title">
+	</div>
+	{% endblock %}
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<h2>Products Overview</h2>
+			<p>Upload your product photos and target user features. All users with application can see your product!</p>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<h2>Products Analysis</h2>
+			<p>Detailed analysis is provided for your product! We help to know better about your design!</p>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<h2>Benefits</h2>
+			<p>Suitable users are shot and higher accuracy is obtainable. Cost is small but returned data is detailed and large in quantity</p>
+		</div>
+	</div>
+<div />
+{% endblock %}
