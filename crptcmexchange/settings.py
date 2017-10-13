@@ -30,7 +30,6 @@ DATABASES = {
         "HOST": "",               # Set to empty string for localhost.             Not used with sqlite3.
         "PORT": "3306",                         # Set to empty string for defaul            t. Not used with sqlite3.
     }
-
 }
 
 # Local time zone for this installation. Choices can be found here:
